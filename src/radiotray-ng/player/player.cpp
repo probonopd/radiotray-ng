@@ -200,6 +200,7 @@ gboolean Player::handle_messages_cb(GstBus* /*bus*/, GstMessage* message, gpoint
 
 			LOG(error) << "error received from element " << GST_OBJECT_NAME(message->src) << ": " << err->message;
 			LOG(error) << "debugging information: " << ((debug_info) ? debug_info : "none");
+			LOG(error) << "error code: " << int(err->code);
 
 			gst_element_set_state(player->pipeline, GST_STATE_NULL);
 			gst_element_set_state(player->souphttpsrc, GST_STATE_NULL);
