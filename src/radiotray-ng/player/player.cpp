@@ -199,8 +199,19 @@ gboolean Player::handle_messages_cb(GstBus* /*bus*/, GstMessage* message, gpoint
 			gst_message_parse_error(message, &err, &debug_info);
 
 			LOG(error) << "error received from element " << GST_OBJECT_NAME(message->src) << ": " << err->message;
-			LOG(error) << "debugging information: " << ((debug_info) ? debug_info : "none");
-			LOG(error) << "error code: " << int(err->code);
+			LOG(error) << "debugging information: " << ((debug_info) ? debug_info : "none") << ", " << int(err->code);
+
+			if (err->domain == GST_RESOURCE_ERROR && err->code == GST_RESOURCE_ERROR_SEEK)
+			{
+				// restart stream...
+				LOG(error) << "dropped connection, restarting stream...";
+
+				gst_element_set_state(player->pipeline, GST_STATE_NULL);
+				gst_element_set_state(player->souphttpsrc, GST_STATE_NULL);
+				gst_element_set_state(player->pipeline, GST_STATE_PAUSED);
+
+				return TRUE;
+			}
 
 			gst_element_set_state(player->pipeline, GST_STATE_NULL);
 			gst_element_set_state(player->souphttpsrc, GST_STATE_NULL);
