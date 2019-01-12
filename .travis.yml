@@ -5,9 +5,10 @@ dist: trusty
 
 install:
   - sudo apt-get -y install lsb-release libcurl4-openssl-dev libjsoncpp-dev libxdg-basedir-dev libnotify-dev libboost-filesystem-dev libgstreamer1.0-dev libappindicator3-dev libboost-log-dev libboost-program-options-dev libgtk-3-dev libnotify-dev libbsd-dev libncurses5-dev libglibmm-2.4-dev libwxgtk3.0-dev libwxgtk3.0-0
-  - rm -rf /usr/bin/cmake /usr/local/cmake* || true
+  - rm -rf /usr/bin/cmake /usr/local/cmak* /usr/local/bin/cmake || true
   - wget "https://github.com/Kitware/CMake/releases/download/v3.13.2/cmake-3.13.2-Linux-x86_64.tar.gz"
-  - sudo tar xfv cmake*.tar.gz --strip-components=1 -C /usr # Newer CMake
+  - sudo tar xf cmake*.tar.gz --strip-components=1 -C /usr # Newer CMake
+  - which cmake
 
 script:
   - cmake . -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
